@@ -54,6 +54,24 @@ export default function Page() {
     const sale_date = receiptdata[0] ? format(parseISO(receiptdata[0].sale_date), 'yyyy-MM-dd') : '';
     const store_name = receiptdata[0]?.store_name || '';
 
+    // Extract the address from the first receipt item
+    // const address = receiptdata[0] ? [
+    //     receiptdata[0].address_1 || 'Roadside Assistance Services',
+    //     receiptdata[0].address_2 || '4 Ellis Road',
+    //     receiptdata[0].address_3 || 'Constantia Kloof',
+    //     receiptdata[0].address_4 || 'Block E, 4th Floor',
+    //     receiptdata[0].address_5 || 'Johannesburg',
+    //     receiptdata[0].address_6 || '1709',
+    // ] : [];
+    const address = receiptdata[0] ? [
+        receiptdata[0].address_1,
+        receiptdata[0].address_2,
+        receiptdata[0].address_3,
+        receiptdata[0].address_4,
+        receiptdata[0].address_5,
+        receiptdata[0].address_6,
+    ] : [];
+
 
     // Convert the LONGBLOB buffer to a base64 string
     const com_logo = receiptdata[0]?.com_logo ? Buffer.from(receiptdata[0].com_logo).toString('base64') : '';
@@ -138,20 +156,20 @@ export default function Page() {
 
                 <div className="text-left text-sm pt-4 pb-3">
                     <p className="py-1">Contact Us:</p>
-                    <p className="py-1">011 991 8000</p>
+                    <p className="py-1">011 425 3616 or 081 403 5890</p>
                 </div>
 
-                <div className="text-left text-sm pb-6">
-                    <p className="py-0">Roadside Assistance Services</p>
-                    <p className="py-0">4 Ellis Road</p>
-                    <p className="py-0">Constantia Kloof</p>
-                    <p className="py-0">Block E, 4th Floor</p>
-                    <p className="py-0">Johannesburg</p>
-                    <p className="py-0">1709</p>
-                </div>
+                {/* Render the address here once */}
+                {address.length > 0 && (
+                    <div className="text-left text-sm pb-6">
+                        {address.map((line, index) => (
+                            <p key={index} className="py-0">{line}</p>
+                        ))}
+                    </div>
+                )}
 
                 <div className="bg-black text-white py-10 flex justify-between gap-4 px-6 -mx-6">
-                    <div className="w-[200px]">
+                    <div className="w-[210px]">
                         <p className="text-sm">Get in touch:</p>
                         <p className="text-sm">
                             Visit
@@ -165,8 +183,8 @@ export default function Page() {
                                 Call us
                             </a>
                         </p>
-                        <p className="text-sm">Mon - Sat: 8am - 5pm,</p>
-                        <p className="text-sm"> Sun: (Chat only) 8am - 5pm</p>
+                        <p className="text-sm">Monday – Friday: 08:30 to 16:30</p>
+                        <p className="text-sm">Weekends: Support on call - 081 403 5890</p>
                     </div>
                     <div className="w-[200px] pt-4">
                         <div className="flex flex-cols gap-4">
@@ -186,10 +204,10 @@ export default function Page() {
                                 <Linkedin size={20} strokeWidth={2} />
                             </a>
                         </div>
-                        <p className="text-sm">Yoco Technologies Pty Ltd</p>
-                        <p className="text-sm">7th Floor, 56 Shortmarket Street</p>
-                        <p className="text-sm">Cape Town</p>
-                        <p className="text-sm">Western Cape, 8001, ZA</p>
+                        <p className="text-sm">37 Main Road, East Leigh</p>
+                        <p className="text-sm">Edenvale</p>
+                        <p className="text-sm">Johannesburg</p>
+                        <p className="text-sm">1610</p>
                         <div className="pt-4">
                             {/* <a href="https://www.yoco.com/za/" className="text-sm text-blue pt-6">
                                 Become a Yoco merchant
