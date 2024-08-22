@@ -20,6 +20,166 @@
     border-radius: 2px;
 }
 
+/* From Uiverse.io by abrahamcalsin - 2.8rem*/ 
+.dot-spinner {
+    --uib-size: 2.8rem;
+    --uib-speed: .9s;
+    --uib-color: #a17efa;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: var(--uib-size);
+    width: var(--uib-size);
+}
+
+.dot-spinner__dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+}
+
+.dot-spinner__dot::before {
+    content: '';
+    height: 20%;
+    width: 20%;
+    border-radius: 50%;
+    background-color: var(--uib-color);
+    transform: scale(0);
+    opacity: 0.5;
+    animation: pulse0112 calc(var(--uib-speed) * 1.111) ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(18, 31, 53, 0.3);
+}
+
+.dot-spinner__dot:nth-child(2) {
+    transform: rotate(45deg);
+}
+
+.dot-spinner__dot:nth-child(2)::before {
+    animation-delay: calc(var(--uib-speed) * -0.875);
+}
+
+.dot-spinner__dot:nth-child(3) {
+    transform: rotate(90deg);
+}
+
+.dot-spinner__dot:nth-child(3)::before {
+    animation-delay: calc(var(--uib-speed) * -0.75);
+}
+
+.dot-spinner__dot:nth-child(4) {
+    transform: rotate(135deg);
+}
+
+.dot-spinner__dot:nth-child(4)::before {
+    animation-delay: calc(var(--uib-speed) * -0.625);
+}
+
+.dot-spinner__dot:nth-child(5) {
+    transform: rotate(180deg);
+}
+
+.dot-spinner__dot:nth-child(5)::before {
+    animation-delay: calc(var(--uib-speed) * -0.5);
+}
+
+.dot-spinner__dot:nth-child(6) {
+    transform: rotate(225deg);
+}
+
+.dot-spinner__dot:nth-child(6)::before {
+    animation-delay: calc(var(--uib-speed) * -0.375);
+}
+
+.dot-spinner__dot:nth-child(7) {
+    transform: rotate(270deg);
+}
+
+.dot-spinner__dot:nth-child(7)::before {
+    animation-delay: calc(var(--uib-speed) * -0.25);
+}
+
+.dot-spinner__dot:nth-child(8) {
+    transform: rotate(315deg);
+}
+
+.dot-spinner__dot:nth-child(8)::before {
+    animation-delay: calc(var(--uib-speed) * -0.125);
+}
+
+@keyframes pulse0112 {
+    0%,
+    100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* From Uiverse.io by terenceodonoghue */ 
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    gap: 0.625em;
+    transform: translate(-50%, -50%);
+  }
+  
+  .container span {
+    border-radius: 50%;
+    height: 1.5em;
+    width: 1.5em;
+  }
+  
+  .container span::before {
+    content: "";
+    display: block;
+    border-radius: inherit;
+    height: inherit;
+    width: inherit;
+    background-color: inherit;
+    animation: ripple 1.8s ease-out infinite;
+    animation-delay: inherit;
+    z-index: -1;
+  }
+  
+  .container span:nth-of-type(1) {
+    background-color: #84cdfa;
+  }
+  
+  .container span:nth-of-type(2) {
+    background-color: #5ad1cd;
+    animation-delay: 0.2s;
+  }
+  
+  .container span:nth-of-type(3) {
+    background-color: #9b59b6;
+    animation-delay: 0.4s;
+  }
+  
+@keyframes ripple {
+    from {
+        opacity: 1;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(3);
+    }
+}
+
 html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
