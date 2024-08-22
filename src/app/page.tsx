@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState, useEffect } from 'react';
 import { CheckIcon, Facebook, Instagram, Twitter, Youtube, Linkedin } from 'lucide-react';
-import { apiEndPoint } from '@/utils/colors';
+import { apiEndPoint, colors } from '@/utils/colors';
 import Image from 'next/image';
 import axios from 'axios';
 import { format, parseISO } from 'date-fns';
