@@ -39,9 +39,11 @@ export default function Page() {
 
     const {invoice} = searchParams
 
-    if(!invoice){
-        return;
-    }
+    useEffect(() => {
+        if (invoice) {
+            fetchReceiptData();
+        }
+    }, [invoice]);
 
     const fetchReceiptData = async () => {
         try {
@@ -65,26 +67,13 @@ export default function Page() {
         setLoading(false);
     }
 
-    useEffect(() => {
-        fetchReceiptData();
-    }, []);
-
-    // if (loading) {
-    //     return (
-    //         <div className="h-screen flex items-center justify-center">
-    //             <div className="dot-spinner">
-    //                 <div className="dot-spinner__dot"></div>
-    //                 <div className="dot-spinner__dot"></div>
-    //                 <div className="dot-spinner__dot"></div>
-    //                 <div className="dot-spinner__dot"></div>
-    //                 <div className="dot-spinner__dot"></div>
-    //                 <div className="dot-spinner__dot"></div>
-    //                 <div className="dot-spinner__dot"></div>
-    //                 <div className="dot-spinner__dot"></div>
-    //                 </div>
-    //         </div>
-    //     )
-    // }
+    // useEffect(() => {
+    //     fetchReceiptData();
+    // }, []);
+    
+    if(!invoice){
+        return;
+    }
 
     if (loading) {
         return (
@@ -103,14 +92,6 @@ export default function Page() {
             </div>
         )
     }
-
-    // if (receiptdata.length > 0 ) {
-    //     return (
-    //         <div>
-    //             There was no data returned for the invoice
-    //         </div>
-    //     )
-    // }
 
     console.log("invoice my invoice", invoice)
     
