@@ -22,6 +22,7 @@ export const colors = {
     }
 
 
-export const apiEndPoint = process.env.REST_ENDPOINT || `legend-receipt-f.vercel.app`
+export const apiEndPoint = process.env.REST_ENDPOINT || `https://legend-receipt-f.vercel.app`
+
 //export const apiEndPoint = process.env.REST_ENDPOINT || `http://localhost:4200`
-//export const  apiEndPoint = process.env.REST_ENDPOINT || `legend-receipt-f.vercel.app`
+//export const  apiEndPoint = process.env.REST_ENDPOINT || `https://legend-receipt-f.vercel.app`

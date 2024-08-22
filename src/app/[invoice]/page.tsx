@@ -52,6 +52,8 @@ export default function Page() {
             const url = `invoice/getreceiptdata/${invoice}`;
             const response = await axios.get<ReceiptResponse>(`${apiEndPoint}/${url}`);
 
+            console.log(response);
+
             // Ensure the data is an array before setting it
             if (Array.isArray(response.data)) {
                 setReceiptData(response.data);
@@ -70,7 +72,7 @@ export default function Page() {
     // useEffect(() => {
     //     fetchReceiptData();
     // }, []);
-    
+
     if(!invoice){
         return;
     }
