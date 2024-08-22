@@ -44,7 +44,7 @@ export default function Page() {
     }
 
     useEffect(() => {
-        const initialDocNum = 'QNJ00011'; // Document-Number
+        const initialDocNum = 'QNJ00011';
         fetchReceiptData(initialDocNum);
     }, []);
 
@@ -54,15 +54,6 @@ export default function Page() {
     const sale_date = receiptdata[0] ? format(parseISO(receiptdata[0].sale_date), 'yyyy-MM-dd') : '';
     const store_name = receiptdata[0]?.store_name || '';
 
-    // Extract the address from the first receipt item
-    // const address = receiptdata[0] ? [
-    //     receiptdata[0].address_1 || 'Roadside Assistance Services',
-    //     receiptdata[0].address_2 || '4 Ellis Road',
-    //     receiptdata[0].address_3 || 'Constantia Kloof',
-    //     receiptdata[0].address_4 || 'Block E, 4th Floor',
-    //     receiptdata[0].address_5 || 'Johannesburg',
-    //     receiptdata[0].address_6 || '1709',
-    // ] : [];
     const address = receiptdata[0] ? [
         receiptdata[0].address_1,
         receiptdata[0].address_2,
@@ -71,7 +62,6 @@ export default function Page() {
         receiptdata[0].address_5,
         receiptdata[0].address_6,
     ] : [];
-
 
     // Convert the LONGBLOB buffer to a base64 string
     const com_logo = receiptdata[0]?.com_logo ? Buffer.from(receiptdata[0].com_logo).toString('base64') : '';
@@ -159,7 +149,6 @@ export default function Page() {
                     <p className="py-1">011 425 3616 or 081 403 5890</p>
                 </div>
 
-                {/* Render the address here once */}
                 {address.length > 0 && (
                     <div className="text-left text-sm pb-6">
                         {address.map((line, index) => (
@@ -208,11 +197,6 @@ export default function Page() {
                         <p className="text-sm">Edenvale</p>
                         <p className="text-sm">Johannesburg</p>
                         <p className="text-sm">1610</p>
-                        <div className="pt-4">
-                            {/* <a href="https://www.yoco.com/za/" className="text-sm text-blue pt-6">
-                                Become a Yoco merchant
-                            </a> */}
-                        </div>
                     </div>
                 </div>
                 <div className="flex justify-between border-t border-gray-300 text-xs text-gray-500 py-4 font-bold uppercase">
