@@ -44,7 +44,7 @@ export default function Page() {
     }
 
     useEffect(() => {
-        const initialDocNum = 'QNJ00011';
+        const initialDocNum = 'QNJ00010';
         fetchReceiptData(initialDocNum);
     }, []);
 
