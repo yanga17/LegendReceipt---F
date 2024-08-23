@@ -95,7 +95,7 @@ export default function Page() {
         )
     }
 
-    console.log("invoice my invoice", invoice)
+    console.log("document number:", invoice)
     
 
     const totalAmount = receiptdata.reduce((sum, item) => sum + item.incl_line_total, 0);
