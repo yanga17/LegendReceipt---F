@@ -49,7 +49,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const url = `/${invoice}`;
+            const url = `${invoice}`;
             const response = await axios.get<ReceiptResponse>(`${apiEndPoint}/${url}`);
 
             console.log(response);
