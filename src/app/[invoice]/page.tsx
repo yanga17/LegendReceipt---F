@@ -49,7 +49,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const url = `invoice/getreceiptdata/${invoice}`;
+            const url = `${invoice}`;
             const response = await axios.get<ReceiptResponse>(`${apiEndPoint}/${url}`);
 
             console.log(response);
@@ -63,7 +63,7 @@ export default function Page() {
 
             console.log("Receipt response:", response);
         } catch (error) {
-            console.error('Error fetching receipt data:', error);
+            console.log('Error fetching receipt data:', error);
             setError(true);
         }
         setLoading(false);
