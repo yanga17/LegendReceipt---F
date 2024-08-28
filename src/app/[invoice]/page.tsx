@@ -61,7 +61,7 @@ export default function Page() {
                 setReceiptData([]); // Fallback to an empty array if the data is not as expected
             }
 
-            console.log("Receipt response:", response);
+            console.log("Receipt response:", response.data);
         } catch (error) {
             console.log('Error fetching receipt data:', error);
             setError(true);
