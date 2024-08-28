@@ -95,6 +95,14 @@ export default function Page() {
         )
     }
 
+    if (receiptdata.length === 0) {
+        return (
+            <div className="mt-52 text-orange">
+                NO DATA!!
+            </div>
+        )
+    }
+
     console.log("document number:", invoice)
     
 
