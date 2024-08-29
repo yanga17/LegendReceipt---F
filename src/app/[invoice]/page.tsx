@@ -56,7 +56,7 @@ export default function Page() {
 
             // Ensure the data is an array before setting it
             if (Array.isArray(response.data)) {
-                setReceiptData(response?.data);
+                setReceiptData(response.data);
             } else {
                 setReceiptData([]); // Fallback to an empty array if the data is not as expected
             }
