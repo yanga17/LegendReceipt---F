@@ -73,6 +73,10 @@ export default function Page() {
     //     fetchReceiptData();
     // }, []);
 
+    if(!invoice){
+        return;
+    }
+
     if (loading) {
         return (
             <div className="container h-screen flex items-center justify-center">
@@ -103,18 +107,12 @@ export default function Page() {
     
 
     const totalAmount = receiptdata.reduce((sum, item) => sum + item.incl_line_total, 0);
-    // Calculate the total VAT by summing up the 'tax' values from each item in the 'receiptdata' array.
     const totalVAT = receiptdata.reduce((sum, item) => sum + item.tax, 0);
 
-    // Retrieve the 'doc_number' from the first item in the 'receiptdata' array. 
     const doc_number = receiptdata[0]?.doc_number || '';
-
-    // Retrieve the 'sale_date' from the first item in the 'receiptdata' array, 
-    // format it to 'yyyy-MM-dd', and store it in 'sale_date'. 
     const sale_date = receiptdata[0] ? format(parseISO(receiptdata[0].sale_date), 'yyyy-MM-dd') : '';
     const store_name = receiptdata[0]?.store_name || '';
 
-    //Accesses the first object in the receiptdata array
     const address = receiptdata[0] ? [
         receiptdata[0].address_1,
         receiptdata[0].address_2,
