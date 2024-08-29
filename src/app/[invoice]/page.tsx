@@ -51,15 +51,16 @@ export default function Page() {
 
             const url = `invoice/getreceiptdata/${invoice}`;
             const response = await axios.get<ReceiptResponse>(`${apiEndPoint}/${url}`);
+            setReceiptData(response?.data);
 
             console.log(response);
 
             // Ensure the data is an array before setting it
-            if (Array.isArray(response.data)) {
-                setReceiptData(response.data);
-            } else {
-                setReceiptData([]); // Fallback to an empty array if the data is not as expected
-            }
+            // if (Array.isArray(response.data)) {
+            //     setReceiptData(response.data);
+            // } else {
+            //     setReceiptData([]); // Fallback to an empty array if the data is not as expected
+            // }
 
             console.log("Receipt response:", response.data);
         } catch (error) {
