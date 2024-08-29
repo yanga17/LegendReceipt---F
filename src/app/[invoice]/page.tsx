@@ -58,7 +58,7 @@ export default function Page() {
             if (Array.isArray(response.data)) {
                 setReceiptData(response?.data);
             } else {
-                setReceiptData([]); // Fallback to an empty array if the data is not as expected
+                setReceiptData(response?.data); // Fallback to an empty array if the data is not as expected
             }
 
             console.log("Receipt response:", response.data);
