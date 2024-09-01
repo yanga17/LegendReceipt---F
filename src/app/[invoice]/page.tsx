@@ -50,20 +50,24 @@ export default function Page() {
 
     useEffect(() => {
         const fetchReceiptData = async () => {
-            if (!invoice) return;
-            try {
-                const response = await fetch(`/api?doc_number=${invoice}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch invoice data');
+            const fetchReceiptData = async () => {
+                if (!invoice) return;
+                try {
+                    const response = await fetch(`/api?doc_number=${invoice}`);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`Failed to fetch invoice data: ${errorData.message || response.statusText}`);
+                    }
+                    const data = await response.json();
+                    setReceiptData(data);
+                    console.log("Data has been fetched frm the database:", data);
+                } catch (err: unknown) {
+                    console.error('Error fetching receipt data:', err);
+                    setError(err instanceof Error ? err.message : 'Error fetching receipt data');
+                } finally {
+                    setLoading(false);
                 }
-                const data = await response.json();
-                setReceiptData(data);
-            } catch (err) {
-                console.error('Error fetching receipt data:', err);
-                setError('Error fetching receipt data');
-            } finally {
-                setLoading(false);
-            }
+            };
         };
 
         fetchReceiptData();
