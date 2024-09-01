@@ -10,14 +10,21 @@ export async function GET(request: NextRequest) {
     let connection;
 
     try {
+        // Log database connection details (be careful with sensitive information)
+        console.log('Attempting to connect to database:', process.env.DB_HOST);
+
         // Establish a connection to the database
         connection = await mysql.createConnection({
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
             database: process.env.DB_NAME,
-            connectionLimit: 200000
+            ssl: {
+                rejectUnauthorized: false
+            }
         });
+
+        console.log('Database connection established');
 
         // Execute a query with the doc_number parameter
         const [rows] = await connection.execute(`
@@ -50,23 +57,23 @@ export async function GET(request: NextRequest) {
                 doc_number = ?
         `, [doc_number]);
         
-        console.log('Query results:', rows);
-        
+        console.log('Query executed successfully');
+        console.log('Number of rows returned:', Array.isArray(rows) ? rows.length : 0);
 
         if (Array.isArray(rows) && rows.length > 0) {
-            // Return the data without additional formatting
             return NextResponse.json(rows);
         } else {
             return NextResponse.json({ message: 'No data found for this invoice' }, { status: 404 });
         }
 
-    } catch (error) {
+    } catch (error: unknown) {
         console.error('Database connection or query error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        return NextResponse.json({ error: 'Internal Server Error', details: errorMessage }, { status: 500 });
     } finally {
         if (connection) {
             await connection.end();
+            console.log('Database connection closed');
         }
     }
 }
