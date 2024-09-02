@@ -53,34 +53,40 @@ export default function Page() {
         const fetchReceiptData = async () => {
             try {
                 setLoading(true);
-
+    
                 const response = await fetch(`/api?doc_number=${invoice}`);
+                console.log("Response status:", response.status);
+                console.log("Response headers:", response.headers);
+    
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.log("Error data:", errorText);
                     throw new Error(`Failed to fetch invoice data: ${response.statusText}`);
                 }
-
+    
                 const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
+                console.log("Content-Type:", contentType);
+    
+                if (contentType && contentType.includes("application/json")) {
                     const data = await response.json();
                     setReceiptData(data);
                     console.log("Data has been fetched from the database:", data);
                 } else {
                     const errorText = await response.text();
-                    console.log("Error data:", errorText);
+                    console.log("Unexpected response format:", errorText);
                     throw new Error(`Unexpected response format: ${errorText}`);
                 }
             } catch (error) {
-                console.log('Error fetching receipt data:', error);
+                console.error('Error fetching receipt data:', error);
                 setError(true);
             } finally {
                 setLoading(false);
             }
         };
-
+    
         fetchReceiptData();
     }, [invoice]);
+
 
     if (loading) {
         return (
