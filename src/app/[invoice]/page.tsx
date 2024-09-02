@@ -50,26 +50,30 @@ export default function Page() {
     const invoice = params?.invoice;
 
     useEffect(() => {
-        // Removed the redundant nested fetchReceiptData function
         const fetchReceiptData = async () => {
-            //if (!invoice) return;
-
             try {
                 setLoading(true);
 
                 const response = await fetch(`/api?doc_number=${invoice}`);
                 if (!response.ok) {
-
-                    const errorData = await response.json();
-                    console.log("Error data:", errorData);
-                    //throw new Error(`Failed to fetch invoice data: ${errorData.message || response.statusText}`);
+                    const errorText = await response.text();
+                    console.log("Error data:", errorText);
+                    throw new Error(`Failed to fetch invoice data: ${response.statusText}`);
                 }
-                const data = await response.json();
-                setReceiptData(data);
-                console.log("Data has been fetched from the database:", data);
+
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    const data = await response.json();
+                    setReceiptData(data);
+                    console.log("Data has been fetched from the database:", data);
+                } else {
+                    const errorText = await response.text();
+                    console.log("Error data:", errorText);
+                    throw new Error(`Unexpected response format: ${errorText}`);
+                }
             } catch (error) {
                 console.log('Error fetching receipt data:', error);
-                setError(true)
+                setError(true);
             } finally {
                 setLoading(false);
             }
