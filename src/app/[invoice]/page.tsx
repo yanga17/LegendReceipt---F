@@ -44,8 +44,8 @@ interface ReceiptData {
 export default function Page() {
     const params = useParams();
     const [receiptdata, setReceiptData] = useState<ReceiptData[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false)
     
     const invoice = params?.invoice;
 
@@ -55,6 +55,8 @@ export default function Page() {
             //if (!invoice) return;
 
             try {
+                setLoading(true);
+                
                 const response = await fetch(`/api?doc_number=${invoice}`);
                 if (!response.ok) {
 
@@ -66,8 +68,8 @@ export default function Page() {
                 setReceiptData(data);
                 console.log("Data has been fetched from the database:", data);
             } catch (err: unknown) {
-                console.error('Error fetching receipt data:', err);
-                setError(err instanceof Error ? err.message : 'Error fetching receipt data');
+                console.log('Error fetching receipt data:', err);
+                setError(true)
             } finally {
                 setLoading(false);
             }
