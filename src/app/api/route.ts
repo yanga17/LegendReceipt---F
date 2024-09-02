@@ -61,6 +61,7 @@ export async function GET(request: NextRequest) {
         console.log('Number of rows returned:', Array.isArray(rows) ? rows.length : 0);
 
         if (Array.isArray(rows) && rows.length > 0) {
+            console.log("data returned:", rows);
             return NextResponse.json(rows);
         } else {
             return NextResponse.json({ message: 'No data found for this invoice' }, { status: 404 });
