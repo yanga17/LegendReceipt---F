@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
             database: process.env.DB_NAME,
+            connectTimeout: 10000, // Corrected property name
             ssl: {
                 rejectUnauthorized: false
             }
