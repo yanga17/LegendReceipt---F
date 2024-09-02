@@ -43,7 +43,7 @@ interface ReceiptData {
 export default function Page() {
     const params = useParams();
     const [receiptdata, setReceiptData] = useState<ReceiptData[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     
     const invoice = params?.invoice as string;
@@ -53,11 +53,14 @@ export default function Page() {
         const fetchReceiptData = async () => {
             if (!invoice) return;
             try {
+                setLoading(true);
+
                 const response = await fetch(`/api?doc_number=${invoice}`);
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(`Failed to fetch invoice data: ${errorData.message || response.statusText}`);
                 }
+                
                 const data = await response.json();
                 setReceiptData(data);
                 console.log("Data has been fetched from the database:", data);
@@ -123,8 +126,8 @@ export default function Page() {
         receiptdata[0].address_6,
     ].filter(Boolean) : []; // Filter out any falsy values
 
-        // Convert the LONGBLOB buffer to a base64 string
-        const com_logo = receiptdata[0]?.com_logo ? Buffer.from(receiptdata[0].com_logo).toString('base64') : '';
+    // Convert the LONGBLOB buffer to a base64 string
+    const com_logo = receiptdata[0]?.com_logo ? Buffer.from(receiptdata[0].com_logo).toString('base64') : '';
 
 
         return (
