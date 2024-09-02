@@ -56,19 +56,19 @@ export default function Page() {
 
             try {
                 setLoading(true);
-                
+
                 const response = await fetch(`/api?doc_number=${invoice}`);
                 if (!response.ok) {
 
                     const errorData = await response.json();
                     console.log("Error data:", errorData);
-                    throw new Error(`Failed to fetch invoice data: ${errorData.message || response.statusText}`);
+                    //throw new Error(`Failed to fetch invoice data: ${errorData.message || response.statusText}`);
                 }
                 const data = await response.json();
                 setReceiptData(data);
                 console.log("Data has been fetched from the database:", data);
-            } catch (err: unknown) {
-                console.log('Error fetching receipt data:', err);
+            } catch (error) {
+                console.log('Error fetching receipt data:', error);
                 setError(true)
             } finally {
                 setLoading(false);
