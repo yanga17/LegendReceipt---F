@@ -1,34 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
 
+// Create a connection pool to reuse connections
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10, // Adjust based on your traffic
+    queueLimit: 0,
+    connectTimeout: 10000,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
 export async function GET(request: NextRequest) {
     console.log('API route hit');
-    const searchParams = request.nextUrl.searchParams;
-    const doc_number = searchParams.get('doc_number');
+    
+    const doc_number = request.nextUrl.searchParams.get('doc_number');
+    if (!doc_number) {
+        return NextResponse.json({ error: 'Missing doc_number parameter' }, { status: 400 });
+    }
+
     console.log('Doc number:', doc_number);
 
-    let connection;
-
     try {
-        // Log database connection details (be careful with sensitive information)
-        console.log('Attempting to connect to database:', process.env.DB_HOST);
-
-        // Establish a connection to the database
-        connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASS,
-            database: process.env.DB_NAME,
-            connectTimeout: 10000, // Corrected property name
-            ssl: {
-                rejectUnauthorized: false
-            }
-        });
-
-        console.log('Database connection established');
-
-        // Execute a query with the doc_number parameter
-        const [rows] = await connection.execute(`
+        // Execute the query with prepared statements to prevent SQL injection
+        const [rows]: [any[], any] = await pool.execute(`
             SELECT 
                 l.doc_number, 
                 l.description, 
@@ -55,27 +55,21 @@ export async function GET(request: NextRequest) {
             JOIN 
                 bit_drywall_erp.tblparameters p
             WHERE 
-                doc_number = ?
+                l.doc_number = ?
         `, [doc_number]);
         
         console.log('Query executed successfully');
-        console.log('Number of rows returned:', Array.isArray(rows) ? rows.length : 0);
 
-        if (Array.isArray(rows) && rows.length > 0) {
-            console.log("data returned:", rows);
+        if (rows.length > 0) {
+            console.log('Data returned:', rows);
             return NextResponse.json(rows);
         } else {
             return NextResponse.json({ message: 'No data found for this invoice' }, { status: 404 });
         }
 
     } catch (error: unknown) {
-        console.log('Database connection or query error:', error);
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-        return NextResponse.json({ error: 'Internal Server Error', details: errorMessage }, { status: 500 });
-    } finally {
-        if (connection) {
-            await connection.end();
-            console.log('Database connection closed');
-        }
+        console.error('Error during database query:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+
     }
 }
