@@ -1,5 +1,7 @@
+// app/technicians/page.tsx
 'use client'
 
+import axios from "axios";
 import * as React from "react";
 import { useState, useEffect } from 'react';
 import { CheckIcon, Facebook, Instagram, Twitter, Youtube, Linkedin } from 'lucide-react';
@@ -37,40 +39,35 @@ interface ReceiptData {
     address_6: string;
     address_7: string;
     customer_name: string;
-    // com_logo: Buffer;
+    com_logo: Buffer;
 }
 
-export default function Page() {
+export default function TechniciansPage() {
     const params = useParams();
     const [receiptdata, setReceiptData] = useState<ReceiptData[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+
     const invoice = params?.invoice as string;
 
     useEffect(() => {
-        // Removed the redundant nested fetchReceiptData function
-        const fetchReceiptData = async () => {
-            if (!invoice) return;
-            try {
-                const response = await fetch(`/api?doc_number=${invoice}`);
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`Failed to fetch invoice data: ${errorData.message || response.statusText}`);
-                }
-                const data = await response.json();
-                setReceiptData(data);
-                console.log("Data has been fetched from the database:", data);
-            } catch (err: unknown) {
-                console.error('Error fetching receipt data:', err);
-                setError(err instanceof Error ? err.message : 'Error fetching receipt data');
-            } finally {
-                setLoading(false);
+        const fetchdata = async () => {
+            try{
+                //const response = await axios.get('/api/hello')
+                const response = await axios.get(`/api/hello?doc_number=${invoice}`);
+                setReceiptData(response.data)
+                console.log("My Receipt Data: ", response.data)
             }
-        };
-
-        fetchReceiptData();
-    }, [invoice]);
+            catch (error) {
+                setError(true)
+                console.log("Error: ", error)
+            }
+            finally{
+                setLoading(false)
+            }
+        }
+        fetchdata()
+    }, [])
 
     if (loading) {
         return (
@@ -98,7 +95,6 @@ export default function Page() {
             </div>
         )
     }
-
     // Safely calculate totalAmount and totalVAT
     const totalAmount = receiptdata.reduce((sum, item) => {
         const lineTotal = parseFloat(formatNumber(item.incl_line_total));
@@ -124,13 +120,12 @@ export default function Page() {
     ].filter(Boolean) : []; // Filter out any falsy values
 
     // Convert the LONGBLOB buffer to a base64 string
-    //const com_logo = receiptdata[0]?.com_logo ? Buffer.from(receiptdata[0].com_logo).toString('base64') : '';
+    const com_logo = receiptdata[0]?.com_logo ? Buffer.from(receiptdata[0].com_logo).toString('base64') : '';
 
-
-        return (
-                <div className="min-h-screen overflow-y-auto">
+  return (
+    <div className="min-h-screen overflow-y-auto">
                     <div className="p-6 max-w-lg mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
-                        {/* {com_logo && (
+                        {com_logo && (
                             <div className="flex justify-center mb-4">
                                 <img
                                     src={`data:image/png;base64,${com_logo}`}
@@ -140,7 +135,7 @@ export default function Page() {
                                     className="text-center"
                                 />
                             </div>
-                        )} */}
+                        )}
                         <h2 className="text-xl font-semibold text-center mb-4">{store_name}</h2>
                         <div className="flex justify-center bg-white mb-6">
                             <button>
@@ -274,5 +269,5 @@ export default function Page() {
                         </div>
                     </div>
                 </div>
-            );
+  );
 }
