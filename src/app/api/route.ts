@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
     console.log('API route hit');
     
     const doc_number = request.nextUrl.searchParams.get('doc_number');
+    
     if (!doc_number) {
         return NextResponse.json({ error: 'Missing doc_number parameter' }, { status: 400 });
     }
@@ -44,8 +45,7 @@ export async function GET(request: NextRequest) {
                 m.address_5, 
                 m.address_6, 
                 m.address_7, 
-                c.Description AS customer_name, 
-                p.com_logo 
+                c.Description AS customer_name 
             FROM 
                 bit_drywall_erp.tblsaleslines l 
             JOIN 
