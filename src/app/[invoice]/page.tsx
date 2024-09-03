@@ -53,7 +53,7 @@ export default function TechniciansPage() {
     useEffect(() => {
         const fetchdata = async () => {
             try{
-                const response = await axios.get(`/api/hello/route?doc_number=${invoice}`)
+                const response = await axios.get(`/api/hello/route/${invoice}`)
                 //const response = await axios.get(`/api/hello?doc_number=${invoice}`);
                 setReceiptData(response.data)
                 console.log("My Receipt Data: ", response.data)
