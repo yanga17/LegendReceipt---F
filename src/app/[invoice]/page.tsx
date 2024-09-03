@@ -42,19 +42,18 @@ interface ReceiptData {
     com_logo: Buffer;
 }
 
-export default function TechniciansPage() {
+export default function Page() {
     const params = useParams();
     const [receiptdata, setReceiptData] = useState<ReceiptData[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
-    const invoice = params?.invoice as string;
 
     useEffect(() => {
         const fetchdata = async () => {
             try{
-                const response = await axios.get(`/api/hello/route/${invoice}`)
-                //const response = await axios.get(`/api/hello?doc_number=${invoice}`);
+                setLoading(true)
+                const response = await axios.get(`/api/${params?.invoice}`)
                 setReceiptData(response.data)
                 console.log("My Receipt Data: ", response.data)
             }
@@ -67,7 +66,7 @@ export default function TechniciansPage() {
             }
         }
         fetchdata()
-    }, [])
+    }, [params?.invoice])
 
     if (loading) {
         return (
