@@ -50,6 +50,7 @@ export default function Page() {
     const invoice = params?.invoice;
 
     useEffect(() => {
+        console.log("Invoice:", invoice);
         const fetchReceiptData = async () => {
             try {
                 setLoading(true);
@@ -57,11 +58,12 @@ export default function Page() {
                 const response = await fetch(`/api?doc_number=${invoice}`);
                 console.log("Response status:", response.status);
                 console.log("Response headers:", response.headers);
+                console.log("Entire Response:", response)
     
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.log("Error data:", errorText);
-                    throw new Error(`Failed to fetch invoice data: ${response.statusText}`);
+                    throw new Error(`Failed to fetch invoice data: ${response}`);
                 }
     
                 const contentType = response.headers.get("content-type");
@@ -76,8 +78,15 @@ export default function Page() {
                     console.log("Unexpected response format:", errorText);
                     throw new Error(`Unexpected response format: ${errorText}`);
                 }
+                
             } catch (error) {
-                console.error('Error fetching receipt data:', error);
+                console.log('Error fetching receipt data:', error);
+                
+                if (error instanceof Error) {
+                    console.log('Error message:', error.message);
+                    console.log('Error stack:', error.stack);
+                }
+
                 setError(true);
             } finally {
                 setLoading(false);

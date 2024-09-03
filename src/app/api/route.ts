@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
         }
 
     } catch (error: unknown) {
-        console.error('Database connection or query error:', error);
+        console.log('Database connection or query error:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         return NextResponse.json({ error: 'Internal Server Error', details: errorMessage }, { status: 500 });
     } finally {
