@@ -1,11 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql2/promise';
 
-export async function GET(request: NextRequest) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log('API route hit');
     
-    const searchParams = request.nextUrl.searchParams;
-    const doc_number = searchParams.get('doc_number');
+    const { doc_number } = req.query;
     console.log('Doc number:', doc_number);
 
     try {
@@ -24,8 +23,7 @@ export async function GET(request: NextRequest) {
 
         console.log('Connected to the database');
 
-        // Execute the query
-        // Execute a query with the doc_number parameter
+        // Execute the query with the doc_number parameter
         const [rows] = await connection.execute(`
             SELECT 
                 l.doc_number, 
@@ -63,10 +61,10 @@ export async function GET(request: NextRequest) {
 
         // Return the results
         console.log('Rows:', rows);
-        return NextResponse.json(rows);
+        res.status(200).json(rows);
         
     } catch (error) {
         console.log('Error connecting to the database or executing the query', error);
-        return NextResponse.json({ error: 'Database query failed' }, { status: 500 });
+        res.status(500).json({ error: 'Database query failed' });
     }
 }
