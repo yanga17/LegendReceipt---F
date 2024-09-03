@@ -48,12 +48,15 @@ export default function Page() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
+    const invoice = params?.invoice as string;
+
 
     useEffect(() => {
         const fetchdata = async () => {
             try{
                 setLoading(true)
-                const response = await axios.get(`/api/${params?.invoice}`)
+                //const response = await axios.get(`/api/hello/${invoice}`)
+                const response = await axios.get(`/api/hello?doc_number=${invoice}`)
                 setReceiptData(response.data)
                 console.log("My Receipt Data: ", response.data)
             }
@@ -66,7 +69,7 @@ export default function Page() {
             }
         }
         fetchdata()
-    }, [params?.invoice])
+    }, [invoice])
 
     if (loading) {
         return (
