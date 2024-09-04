@@ -22,7 +22,8 @@ export const colors = {
 }
 
 
-export const apiEndPoint = process.env.REST_ENDPOINT || `http://localhost:3000/api`
+export const apiEndPoint = process.env.REST_ENDPOINT || `https://legend-receipt-b.vercel.app`
 
 //export const apiEndPoint = process.env.REST_ENDPOINT || `https://legend-receipt-f.vercel.app/api`
-//export const apiEndPoint = process.env.REST_ENDPOINT || `http://localhost:3000/api` -- uurl to send to goddie - erpreceipt-f
+//export const apiEndPoint = process.env.REST_ENDPOINT || `http://localhost:3000/api` -- url to send to goddie - erpreceipt-f
+//export const apiEndPoint = process.env.REST_ENDPOINT || 'http://localhost:4200' - live - https://legend-receipt-b.vercel.app
