@@ -1,7 +1,8 @@
-// app/technicians/page.tsx
+
 'use client'
 
 import axios from "axios";
+import { apiEndPoint, colors } from '@/utils/colors';
 import * as React from "react";
 import { useState, useEffect } from 'react';
 import { CheckIcon, Facebook, Instagram, Twitter, Youtube, Linkedin } from 'lucide-react';
@@ -42,21 +43,42 @@ interface ReceiptData {
     com_logo: Buffer;
 }
 
+type receiptresponse = ReceiptData[];
+
 export default function Page() {
     const params = useParams();
-    const [receiptdata, setReceiptData] = useState<ReceiptData[]>([]);
+    const [receiptdata, setReceiptData] = useState<receiptresponse>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
     const invoice = params?.invoice as string;
 
 
+    // useEffect(() => {
+    //     const fetchdata = async () => {
+    //         try{
+    //             setLoading(true)
+    //             const response = await axios.get(`/api/hello/${invoice}`)
+    //             //const response = await axios.get(`/api/hello?doc_number=${invoice}`)
+    //             setReceiptData(response.data)
+    //             console.log("My Receipt Data: ", response.data)
+    //         }
+    //         catch (error) {
+    //             setError(true)
+    //             console.log("Error: ", error)
+    //         }
+    //         finally{
+    //             setLoading(false)
+    //         }
+    //     }
+    //     fetchdata()
+    // }, [invoice])
     useEffect(() => {
-        const fetchdata = async () => {
+        const fetchdata = async (invoice: string) => {
             try{
                 setLoading(true)
-                //const response = await axios.get(`/api/hello/${invoice}`)
-                const response = await axios.get(`/api/hello?doc_number=${invoice}`)
+                const url = `invoice/getreceiptdata/${invoice}`;
+                const response = await axios.get<receiptresponse>(`${apiEndPoint}/${url}`);
                 setReceiptData(response.data)
                 console.log("My Receipt Data: ", response.data)
             }
@@ -68,8 +90,9 @@ export default function Page() {
                 setLoading(false)
             }
         }
-        fetchdata()
+        fetchdata(invoice)
     }, [invoice])
+    
 
     if (loading) {
         return (
@@ -124,17 +147,17 @@ export default function Page() {
     // Convert the LONGBLOB buffer to a base64 string
     const com_logo = receiptdata[0]?.com_logo ? Buffer.from(receiptdata[0].com_logo).toString('base64') : '';
 
-  return (
-    <div className="min-h-screen overflow-y-auto">
-                    <div className="p-6 max-w-lg mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
-                        {com_logo && (
-                            <div className="flex justify-center mb-4">
-                                <img
-                                    src={`data:image/png;base64,${com_logo}`}
-                                    alt="Company Logo"
-                                    width={200}
-                                    height={50}
-                                    className="text-center"
+    return (
+        <div className="min-h-screen overflow-y-auto">
+            <div className="p-6 max-w-lg mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
+                {com_logo && (
+                    <div className="flex justify-center mb-4">
+                        <img
+                            src={`data:image/png;base64,${com_logo}`}
+                            alt="Company Logo"
+                            width={200}
+                            height={50}
+                            className="text-center"
                                 />
                             </div>
                         )}
@@ -142,12 +165,12 @@ export default function Page() {
                         <div className="flex justify-center bg-white mb-6">
                             <button>
                                 <CheckIcon size={80} strokeWidth={2} color="green" />
-                            </button>
-                        </div>
+                        </button>
+                    </div>
             
-                        <h3 className="text-center text-lg mb-6 font-bold">Payment Received</h3>
+                    <h3 className="text-center text-lg mb-6 font-bold">Payment Received</h3>
             
-                        <div className="text-center mb-6">
+                    <div className="text-center mb-6">
                             <h4 className="text-sm">TAX INVOICE</h4>
                             <p className="text-sm">
                                 Thank you for your payment of{' '}
@@ -271,5 +294,5 @@ export default function Page() {
                         </div>
                     </div>
                 </div>
-  );
+    );
 }
