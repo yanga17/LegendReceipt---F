@@ -54,31 +54,12 @@ export default function Page() {
     const invoice = params?.invoice as string;
 
 
-    // useEffect(() => {
-    //     const fetchdata = async () => {
-    //         try{
-    //             setLoading(true)
-    //             const response = await axios.get(`/api/hello/${invoice}`)
-    //             //const response = await axios.get(`/api/hello?doc_number=${invoice}`)
-    //             setReceiptData(response.data)
-    //             console.log("My Receipt Data: ", response.data)
-    //         }
-    //         catch (error) {
-    //             setError(true)
-    //             console.log("Error: ", error)
-    //         }
-    //         finally{
-    //             setLoading(false)
-    //         }
-    //     }
-    //     fetchdata()
-    // }, [invoice])
     useEffect(() => {
-        const fetchdata = async (invoice: string) => {
+        const fetchdata = async () => {
             try{
                 setLoading(true)
-                const url = `invoice/getreceiptdata/${invoice}`;
-                const response = await axios.get<receiptresponse>(`${apiEndPoint}/${url}`);
+                //const response = await axios.get(`/api/hello/${invoice}`)
+                const response = await axios.get(`/api/hello?doc_number=${invoice}`)
                 setReceiptData(response.data)
                 console.log("My Receipt Data: ", response.data)
             }
@@ -90,9 +71,9 @@ export default function Page() {
                 setLoading(false)
             }
         }
-        fetchdata(invoice)
+        fetchdata()
     }, [invoice])
-    
+
 
     if (loading) {
         return (
