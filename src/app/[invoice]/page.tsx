@@ -58,10 +58,8 @@ export default function Page() {
         const fetchreceiptdata = async () => {
             try{
                 setLoading(true)
-
                 //const response = await axios.get(`/api/hello/${invoice}`)
-                //const response = await axios.get(`http://localhost:3000/api/hello?doc_number=${invoice}`)
-                const response = await axios.get(`https://legend-receipt-f.vercel.app/api/hello?doc_number=${invoice}`)
+                const response = await axios.get(`/api/hello?doc_number=${invoice}`)
                 setReceiptData(response.data)
                 console.log("My Receipt Data Returned: ", response.data)
 

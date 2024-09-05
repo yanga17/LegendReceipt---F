@@ -1,20 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const doc_number = searchParams.get('doc_number');
     console.log('API route hit');
-    
-    const { doc_number } = req.query;
     console.log('Doc number:', doc_number);
 
     try {
         console.log('Connecting to the database');
 
-        console.log('DB_HOST:', process.env.DB_HOST);
-        console.log('DB_USER:', process.env.DB_USER);
-        console.log('DB_PASS:', process.env.DB_PASS);
-        console.log('DB_NAME:', process.env.DB_NAME);
-        
         // Establish a connection to the database
         const connection = await mysql.createConnection({
             host: process.env.DB_HOST,
@@ -66,10 +61,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         // Return the results
         console.log('Rows:', rows);
-        res.status(200).json(rows);
+        return NextResponse.json(rows);
         
     } catch (error: unknown) {
-        console.error('Error connecting to the database or executing the query');
-        res.status(500).json({ error: 'Database query failed', details: error });
+        console.error('Error connecting to the database or executing the query', error);
+        return NextResponse.json({ error: 'Database query failed', details: error }, { status: 500 });
     }
 }
