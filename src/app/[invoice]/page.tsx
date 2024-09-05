@@ -55,23 +55,26 @@ export default function Page() {
 
 
     useEffect(() => {
-        const fetchdata = async () => {
+        const fetchreceiptdata = async () => {
             try{
                 setLoading(true)
+
                 //const response = await axios.get(`/api/hello/${invoice}`)
-                const response = await axios.get(`/api/hello?doc_number=${invoice}`)
+                //const response = await axios.get(`http://localhost:3000/api/hello?doc_number=${invoice}`)
+                const response = await axios.get(`https://legend-receipt-f.vercel.app/api/hello?doc_number=${invoice}`)
                 setReceiptData(response.data)
-                console.log("My Receipt Data: ", response.data)
-            }
-            catch (error) {
+                console.log("My Receipt Data Returned: ", response.data)
+
+            } catch (error) {
                 setError(true)
-                console.log("Error: ", error)
-            }
-            finally{
+                console.log("Error fetching receipt data: ", error)
+
+            } finally {
                 setLoading(false)
             }
         }
-        fetchdata()
+
+        fetchreceiptdata();
     }, [invoice])
 
 
@@ -101,6 +104,7 @@ export default function Page() {
             </div>
         )
     }
+
     // Safely calculate totalAmount and totalVAT
     const totalAmount = receiptdata.reduce((sum, item) => {
         const lineTotal = parseFloat(formatNumber(item.incl_line_total));
