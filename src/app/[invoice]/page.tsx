@@ -136,7 +136,7 @@ export default function Page() {
             <div className="p-6 max-w-lg mx-auto bg-white shadow-lg rounded-lg border border-gray-200">
                 {com_logo && (
                     <div className="flex justify-center mb-4">
-                        <img
+                        <Image
                             src={`data:image/png;base64,${com_logo}`}
                             alt="Company Logo"
                             width={200}
