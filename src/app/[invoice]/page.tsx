@@ -56,10 +56,11 @@ export default function Page() {
 
     useEffect(() => {
         const fetchreceiptdata = async () => {
+            //http://localhost:4200/invoice/getreceiptdata/BS100001
             try{
                 setLoading(true)
-                //const response = await axios.get(`/api/hello/${invoice}`)
-                const response = await axios.get(`/api/hello?doc_number=${invoice}`)
+                const url = `invoice/getreceiptdata/${invoice}`;
+                const response = await axios.get<receiptresponse>(`${apiEndPoint}/${url}`);
                 setReceiptData(response.data)
                 console.log("My Receipt Data Returned: ", response.data)
 
