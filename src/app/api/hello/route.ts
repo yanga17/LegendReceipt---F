@@ -4,11 +4,18 @@ import mysql from 'mysql2/promise';
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const doc_number = searchParams.get('doc_number');
+
+
     console.log('API route hit');
     console.log('Doc number:', doc_number);
 
     try {
-        console.log('Connecting to the database');
+        console.log('Connecting to the database: ', {
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: process.env.DB_NAME,
+        });
 
         // Establish a connection to the database
         const connection = await mysql.createConnection({
